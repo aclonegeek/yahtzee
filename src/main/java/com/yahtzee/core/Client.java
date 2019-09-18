@@ -24,6 +24,11 @@ public class Client {
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 
             while (true) {
+                String serverMessage = in.readLine();
+                if (serverMessage != null) {
+                    System.out.println(serverMessage);
+                }
+
                 String userInput = stdIn.readLine();
                 if (userInput != null) {
                     out.println(userInput);
