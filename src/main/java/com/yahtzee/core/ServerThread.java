@@ -12,18 +12,27 @@ public class ServerThread extends Thread {
     private Server server;
     private Socket socket;
 
+    private int playerIndex;
+
     public ServerThread(Server server, Socket socket) {
         this.server = server;
         this.socket = socket;
+        this.playerIndex = server.getPlayers().size();
     }
 
     public void run() {
         try (PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
              BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));) {
             boolean isNewUser = true;
-            out.println("Welcome player " + (this.server.getPlayers().size() + 1) + ", please enter your name: ");
+            out.println("Welcome player " + (this.playerIndex + 1) + ", please enter your name: ");
+
+            boolean waiting = false;
 
             while (true) {
+                if (waiting) {
+                    continue;
+                }
+
                 String input = in.readLine();
                 if (input == null) {
                     continue;
@@ -34,9 +43,10 @@ public class ServerThread extends Thread {
 
                     if (!this.server.isGameActive()) { // TODO(randy): Probably remove this check.
                         if (this.server.getPlayers().size() == 1) {
-                            out.println("Ready Player One?");
+                            out.println("Ready Player One? (y)");
                         } else {
                             out.println("Waiting for player 1 to start the game...");
+                            waiting = true;
                         }
                     }
 
@@ -45,7 +55,7 @@ public class ServerThread extends Thread {
                     continue;
                 }
 
-                if (!this.server.isGameActive() || !processInput(out, in, input)) {
+                if (!processInput(out, in, input)) {
                     break;
                 }
             }
