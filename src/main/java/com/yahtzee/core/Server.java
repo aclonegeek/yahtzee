@@ -9,9 +9,9 @@ import java.util.ArrayList;
 public class Server {
     private ArrayList<ServerThread> clients;
     private ArrayList<Player> players;
-    private Player currentPlayer;
 
-    private boolean gameActive = false;
+    private int currentPlayer;
+    private boolean gameActive;
 
     public static void main(String[] args) {
         if (args.length != 1) {
