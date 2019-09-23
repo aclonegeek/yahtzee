@@ -191,6 +191,36 @@ public class ScoreSheetTest extends TestCase {
         assertEquals(18, ss.calculateScore());
     }
 
+    public void testScoringUpperSectionBonusAtExactly63() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(6, 6, 6, 6, 6);
+        ss.score(ScoreType.SIXES, dice);
+
+        dice = createDiceArray(5, 5, 5, 5, 5);
+        ss.score(ScoreType.FIVES, dice);
+
+        dice = createDiceArray(2, 2, 2, 2, 1);
+        ss.score(ScoreType.TWOS, dice);
+
+        assertEquals((6 * 5) + (5 * 5) + (2 * 4) + 35,
+                     ss.calculateScore());
+    }
+
+    public void testScoringUpperSectionBonusAbove63() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(6, 6, 6, 6, 6);
+        ss.score(ScoreType.SIXES, dice);
+
+        dice = createDiceArray(5, 5, 5, 5, 5);
+        ss.score(ScoreType.FIVES, dice);
+
+        dice = createDiceArray(4, 4, 4, 4, 4);
+        ss.score(ScoreType.FOURS, dice);
+
+        assertEquals((6 * 5) + (5 * 5) + (4 * 5) + 35,
+                     ss.calculateScore());
+    }
+
     public void testScoringInSameCategory() {
         ScoreSheet ss = new ScoreSheet();
         Dice[] dice = createDiceArray(1, 1, 1, 1, 1);
