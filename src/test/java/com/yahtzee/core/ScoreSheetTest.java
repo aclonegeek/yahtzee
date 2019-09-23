@@ -221,6 +221,66 @@ public class ScoreSheetTest extends TestCase {
                      ss.calculateScore());
     }
 
+    public void testScoringThreeOfAKind() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(6, 1, 6, 2, 6);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.THREE_OF_A_KIND));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.THREE_OF_A_KIND, dice);
+
+        assertEquals(Integer.valueOf(18),
+                     ss.getScoreSheet().get(ScoreType.THREE_OF_A_KIND));
+        assertEquals(18, ss.calculateScore());
+    }
+
+    public void testNotScoringThreeOfAKind() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(6, 1, 3, 2, 6);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.THREE_OF_A_KIND));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.THREE_OF_A_KIND, dice);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.THREE_OF_A_KIND));
+        assertEquals(0, ss.calculateScore());
+    }
+
+    public void testScoringFourOfAKind() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(6, 1, 6, 6, 6);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.FOUR_OF_A_KIND));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.FOUR_OF_A_KIND, dice);
+
+        assertEquals(Integer.valueOf(24),
+                     ss.getScoreSheet().get(ScoreType.FOUR_OF_A_KIND));
+        assertEquals(24, ss.calculateScore());
+    }
+
+    public void testNotScoringFourOfAKind() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(2, 1, 6, 6, 6);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.FOUR_OF_A_KIND));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.FOUR_OF_A_KIND, dice);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.FOUR_OF_A_KIND));
+        assertEquals(0, ss.calculateScore());
+    }
+
     public void testScoringInSameCategory() {
         ScoreSheet ss = new ScoreSheet();
         Dice[] dice = createDiceArray(1, 1, 1, 1, 1);
