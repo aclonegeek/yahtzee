@@ -53,6 +53,23 @@ public class ScoreSheet {
 
         this.scoreSheet.put(scoreType,
                             this.scoreSheet.get(scoreType) + (section * count));
+
+        // Score the upper section bonus if:
+        //     a. It is eligible to be scored, and
+        //     b. It hasn't be scored yet.
+        if (calculateUpperSectionScoreWithoutBonus() >= 63 &&
+            this.scoreSheet.get(ScoreType.BONUS) == 0) {
+            this.scoreSheet.put(ScoreType.BONUS, 35);
+        }
+    }
+
+    private int calculateUpperSectionScoreWithoutBonus() {
+        return this.scoreSheet.get(ScoreType.ONES) +
+               this.scoreSheet.get(ScoreType.TWOS) +
+               this.scoreSheet.get(ScoreType.THREES) +
+               this.scoreSheet.get(ScoreType.FOURS) +
+               this.scoreSheet.get(ScoreType.FIVES) +
+               this.scoreSheet.get(ScoreType.SIXES);
     }
 
     public int calculateScore() {
