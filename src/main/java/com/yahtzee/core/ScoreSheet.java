@@ -25,6 +25,11 @@ public class ScoreSheet {
     }
 
     public void score(ScoreType scoreType, Dice[] dice) {
+        // Prevent scoring in an already scored in category.
+        if (this.scoreSheet.get(scoreType) > 0) {
+            return;
+        }
+
         switch (scoreType) {
         case ONES:
         case TWOS:
