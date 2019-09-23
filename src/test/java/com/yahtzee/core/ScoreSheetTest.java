@@ -190,4 +190,21 @@ public class ScoreSheetTest extends TestCase {
                      ss.getScoreSheet().get(ScoreType.SIXES));
         assertEquals(18, ss.calculateScore());
     }
+
+    public void testScoringInSameCategory() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(1, 1, 1, 1, 1);
+
+        ss.score(ScoreType.ONES, dice);
+
+        assertEquals(Integer.valueOf(5),
+                     ss.getScoreSheet().get(ScoreType.ONES));
+        assertEquals(5, ss.calculateScore());
+
+        ss.score(ScoreType.ONES, dice);
+
+        assertEquals(Integer.valueOf(5),
+                     ss.getScoreSheet().get(ScoreType.ONES));
+        assertEquals(5, ss.calculateScore());
+    }
 }
