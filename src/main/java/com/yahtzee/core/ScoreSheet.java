@@ -43,6 +43,9 @@ public class ScoreSheet {
         case FOUR_OF_A_KIND:
             this.scoreThreeOrFourOfAKind(scoreType, dice);
             break;
+        case FULL_HOUSE:
+            this.scoreFullHouse(dice);
+            break;
         }
     }
 
@@ -80,6 +83,28 @@ public class ScoreSheet {
                 this.scoreSheet.put(scoreType, countDesired * (i + 1));
                 return;
             }
+        }
+    }
+
+    private void scoreFullHouse(Dice[] dice) {
+        int[] occurences = new int[] {0, 0, 0, 0, 0, 0};
+        boolean twoDiceSame = false;
+        boolean threeDiceSame = false;
+
+        for (Dice d : dice) {
+            occurences[d.getValue() - 1]++;
+        }
+
+        for (int i = 0; i < occurences.length; i++) {
+            if (occurences[i] == 2) {
+                twoDiceSame = true;
+            } else if (occurences[i] == 3) {
+                threeDiceSame = true;
+            }
+        }
+
+        if (twoDiceSame && threeDiceSame) {
+            this.scoreSheet.put(ScoreType.FULL_HOUSE, 25);
         }
     }
 
