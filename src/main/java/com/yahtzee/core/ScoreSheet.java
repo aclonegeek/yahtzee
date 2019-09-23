@@ -56,8 +56,7 @@ public class ScoreSheet {
             }
         }
 
-        this.scoreSheet.put(scoreType,
-                            this.scoreSheet.get(scoreType) + (section * count));
+        this.scoreSheet.put(scoreType, section * count);
 
         // Score the upper section bonus if:
         //     a. It is eligible to be scored, and
