@@ -281,6 +281,51 @@ public class ScoreSheetTest extends TestCase {
         assertEquals(0, ss.calculateScore());
     }
 
+    public void testScoringFullHouse() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(1, 6, 6, 6, 1);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.FULL_HOUSE));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.FULL_HOUSE, dice);
+
+        assertEquals(Integer.valueOf(25),
+                     ss.getScoreSheet().get(ScoreType.FULL_HOUSE));
+        assertEquals(25, ss.calculateScore());
+    }
+
+    public void testNotScoringFullHouseWithMissingDoubles() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(6, 6, 6, 4, 5);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.FULL_HOUSE));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.FULL_HOUSE, dice);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.FULL_HOUSE));
+        assertEquals(0, ss.calculateScore());
+    }
+
+    public void testNotScoringFullHouseWithMissingTriplets() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(1, 1, 6, 1, 1);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.FULL_HOUSE));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.FULL_HOUSE, dice);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.FULL_HOUSE));
+        assertEquals(0, ss.calculateScore());
+    }
+
     public void testScoringInSameCategory() {
         ScoreSheet ss = new ScoreSheet();
         Dice[] dice = createDiceArray(1, 1, 1, 1, 1);
