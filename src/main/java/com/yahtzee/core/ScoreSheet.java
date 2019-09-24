@@ -121,19 +121,20 @@ public class ScoreSheet {
 
     private void scoreStraight(ScoreType scoreType, Dice[] dice) {
         int amountOfSequentialNumbers = scoreType == ScoreType.SMALL_STRAIGHT ? 4 : 5;
-        boolean canStillBeScored = true;
+        int[] sortedDice = Arrays.stream(dice)
+                                 .mapToInt(v -> v.getValue())
+                                 .sorted()
+                                 .toArray();
 
-        for (int i = 0; i < dice.length - 1; i++) {
-            if (dice[i].getValue() > dice[i + 1].getValue()) {
-                if (amountOfSequentialNumbers == 5) {
-                    return;
-                }
+        for (int i = 0; i < sortedDice.length - 1; i++) {
+            // We already have a small straight, no need to do extra work.
+            if (amountOfSequentialNumbers == 4 && i == 4) {
+                break;
+            }
 
-                // A small straight can still potentially be scored.
-                if (i == 0) {
-                    canStillBeScored = false;
-                    continue;
-                } else if (i == dice.length - 2 && canStillBeScored) {
+            if (sortedDice[i] >= sortedDice[i + 1]) {
+                // We may still have a small straight after the first item.
+                if (amountOfSequentialNumbers == 4 && i == 0) {
                     continue;
                 }
 
