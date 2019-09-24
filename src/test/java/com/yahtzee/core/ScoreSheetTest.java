@@ -491,6 +491,58 @@ public class ScoreSheetTest extends TestCase {
         assertEquals(18, ss.calculateScore());
     }
 
+    public void testScoringYahtzeeBonusAndUpperSection() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(6, 6, 6, 6, 6);
+
+        ss.score(ScoreType.YAHTZEE, dice);
+
+        assertEquals(Integer.valueOf(50),
+                     ss.getScoreSheet().get(ScoreType.YAHTZEE));
+        assertEquals(50, ss.calculateScore());
+
+        ss.score(ScoreType.YAHTZEE, dice);
+
+        assertEquals(Integer.valueOf(30),
+                     ss.getScoreSheet().get(ScoreType.SIXES));
+        assertEquals(Integer.valueOf(150),
+                     ss.getScoreSheet().get(ScoreType.YAHTZEE));
+        assertEquals(180, ss.calculateScore());
+    }
+
+    public void testScoringYahtzeeBonusAndOtherCategory() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(6, 6, 6, 6, 6);
+
+        ss.score(ScoreType.SIXES, dice);
+        ss.score(ScoreType.YAHTZEE, dice);
+
+        assertEquals(Integer.valueOf(30),
+                     ss.getScoreSheet().get(ScoreType.SIXES));
+        assertEquals(Integer.valueOf(50),
+                     ss.getScoreSheet().get(ScoreType.YAHTZEE));
+        assertEquals(80, ss.calculateScore());
+
+        ss.score(ScoreType.YAHTZEE, dice);
+
+        assertEquals(Integer.valueOf(150),
+                     ss.getScoreSheet().get(ScoreType.YAHTZEE));
+        assertEquals(180, ss.calculateScore());
+
+        assertTrue(ss.canScoreYahtzeeBonus());
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.CHANCE));
+
+        ss.score(ScoreType.CHANCE, dice);
+
+        assertEquals(Integer.valueOf(30),
+                     ss.getScoreSheet().get(ScoreType.CHANCE));
+        assertEquals(210, ss.calculateScore());
+
+        assertFalse(ss.canScoreYahtzeeBonus());
+    }
+
     public void testScoringInSameCategory() {
         ScoreSheet ss = new ScoreSheet();
         Dice[] dice = createDiceArray(1, 1, 1, 1, 1);
