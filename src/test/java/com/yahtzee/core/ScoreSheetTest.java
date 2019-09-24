@@ -326,6 +326,111 @@ public class ScoreSheetTest extends TestCase {
         assertEquals(0, ss.calculateScore());
     }
 
+    public void testScoringSmallStraight() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(6, 1, 2, 3, 5);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.SMALL_STRAIGHT));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.SMALL_STRAIGHT, dice);
+
+        assertEquals(Integer.valueOf(30),
+                     ss.getScoreSheet().get(ScoreType.SMALL_STRAIGHT));
+        assertEquals(30, ss.calculateScore());
+    }
+
+    public void testScoringSmallStraight2() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(1, 3, 4, 5, 1);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.SMALL_STRAIGHT));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.SMALL_STRAIGHT, dice);
+
+        assertEquals(Integer.valueOf(30),
+                     ss.getScoreSheet().get(ScoreType.SMALL_STRAIGHT));
+        assertEquals(30, ss.calculateScore());
+    }
+
+    public void testNotScoringSmallStraightBeginning() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(6, 3, 2, 3, 5);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.SMALL_STRAIGHT));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.SMALL_STRAIGHT, dice);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.SMALL_STRAIGHT));
+        assertEquals(0, ss.calculateScore());
+    }
+
+    public void testNotScoringSmallStraightMiddle() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(1, 2, 4, 3, 5);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.SMALL_STRAIGHT));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.SMALL_STRAIGHT, dice);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.SMALL_STRAIGHT));
+        assertEquals(0, ss.calculateScore());
+    }
+
+    public void testNotScoringSmallStraightEnd() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(1, 2, 3, 1, 1);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.SMALL_STRAIGHT));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.SMALL_STRAIGHT, dice);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.SMALL_STRAIGHT));
+        assertEquals(0, ss.calculateScore());
+    }
+
+    public void testScoringBigStraight() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(1, 2, 3, 4, 6);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.LARGE_STRAIGHT));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.LARGE_STRAIGHT, dice);
+
+        assertEquals(Integer.valueOf(40),
+                     ss.getScoreSheet().get(ScoreType.LARGE_STRAIGHT));
+        assertEquals(40, ss.calculateScore());
+    }
+
+    public void testNotScoringBigStraight() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(3, 2, 3, 4, 6);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.LARGE_STRAIGHT));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.LARGE_STRAIGHT, dice);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.LARGE_STRAIGHT));
+        assertEquals(0, ss.calculateScore());
+    }
+
     public void testScoringInSameCategory() {
         ScoreSheet ss = new ScoreSheet();
         Dice[] dice = createDiceArray(1, 1, 1, 1, 1);
