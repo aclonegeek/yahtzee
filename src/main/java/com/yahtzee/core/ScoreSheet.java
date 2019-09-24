@@ -46,6 +46,10 @@ public class ScoreSheet {
         case FULL_HOUSE:
             this.scoreFullHouse(dice);
             break;
+        case SMALL_STRAIGHT:
+        case LARGE_STRAIGHT:
+            this.scoreStraight(scoreType, dice);
+            break;
         }
     }
 
@@ -106,6 +110,32 @@ public class ScoreSheet {
         if (twoDiceSame && threeDiceSame) {
             this.scoreSheet.put(ScoreType.FULL_HOUSE, 25);
         }
+    }
+
+    private void scoreStraight(ScoreType scoreType, Dice[] dice) {
+        int amountOfSequentialNumbers = scoreType == ScoreType.SMALL_STRAIGHT ? 4 : 5;
+        boolean canStillBeScored = true;
+
+        for (int i = 0; i < dice.length - 1; i++) {
+            if (dice[i].getValue() > dice[i + 1].getValue()) {
+                if (amountOfSequentialNumbers == 5) {
+                    return;
+                }
+
+                // A small straight can still potentially be scored.
+                if (i == 0) {
+                    canStillBeScored = false;
+                    continue;
+                } else if (i == dice.length - 2 && canStillBeScored) {
+                    continue;
+                }
+
+                return;
+            }
+        }
+
+        this.scoreSheet.put(scoreType,
+                            scoreType == ScoreType.SMALL_STRAIGHT ? 30 : 40);
     }
 
     private int calculateUpperSectionScoreWithoutBonus() {
