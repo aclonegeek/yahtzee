@@ -461,6 +461,21 @@ public class ScoreSheetTest extends TestCase {
         assertEquals(0, ss.calculateScore());
     }
 
+    public void testScoringChance() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(1, 6, 6, 2, 3);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.CHANCE));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.CHANCE, dice);
+
+        assertEquals(Integer.valueOf(18),
+                     ss.getScoreSheet().get(ScoreType.CHANCE));
+        assertEquals(18, ss.calculateScore());
+    }
+
     public void testScoringInSameCategory() {
         ScoreSheet ss = new ScoreSheet();
         Dice[] dice = createDiceArray(1, 1, 1, 1, 1);
