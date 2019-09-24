@@ -54,6 +54,9 @@ public class ScoreSheet {
         case YAHTZEE:
             this.scoreYahtzee(dice);
             break;
+        case CHANCE:
+            this.scoreChance(dice);
+            break;
         }
     }
 
@@ -148,6 +151,14 @@ public class ScoreSheet {
                   .allMatch(v -> v.getValue() == dice[0].getValue())) {
             this.scoreSheet.put(ScoreType.YAHTZEE, 50);
         }
+    }
+
+    private void scoreChance(Dice[] dice) {
+        int value = 0;
+        for (Dice d : dice) {
+            value += d.getValue();
+        }
+        this.scoreSheet.put(ScoreType.CHANCE, value);
     }
 
     private int calculateUpperSectionScoreWithoutBonus() {
