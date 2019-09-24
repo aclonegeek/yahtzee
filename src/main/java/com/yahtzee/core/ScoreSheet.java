@@ -1,5 +1,6 @@
 package com.yahtzee.core;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class ScoreSheet {
@@ -49,6 +50,9 @@ public class ScoreSheet {
         case SMALL_STRAIGHT:
         case LARGE_STRAIGHT:
             this.scoreStraight(scoreType, dice);
+            break;
+        case YAHTZEE:
+            this.scoreYahtzee(dice);
             break;
         }
     }
@@ -136,6 +140,14 @@ public class ScoreSheet {
 
         this.scoreSheet.put(scoreType,
                             scoreType == ScoreType.SMALL_STRAIGHT ? 30 : 40);
+    }
+
+    private void scoreYahtzee(Dice[] dice) {
+        if (Arrays.asList(dice)
+                  .stream()
+                  .allMatch(v -> v.getValue() == dice[0].getValue())) {
+            this.scoreSheet.put(ScoreType.YAHTZEE, 50);
+        }
     }
 
     private int calculateUpperSectionScoreWithoutBonus() {
