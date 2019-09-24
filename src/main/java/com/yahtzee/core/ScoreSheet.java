@@ -6,6 +6,8 @@ import java.util.HashMap;
 public class ScoreSheet {
     private HashMap<ScoreType, Integer> scoreSheet;
 
+    private boolean scoringYahtzeeBonus;
+
     public ScoreSheet() {
         this.scoreSheet = new HashMap<>();
         this.scoreSheet.put(ScoreType.ONES, 0);
@@ -23,11 +25,13 @@ public class ScoreSheet {
         this.scoreSheet.put(ScoreType.FOUR_OF_A_KIND, 0);
         this.scoreSheet.put(ScoreType.CHANCE, 0);
         this.scoreSheet.put(ScoreType.YAHTZEE, 0);
+
+        this.scoringYahtzeeBonus = false;
     }
 
     public void score(ScoreType scoreType, Dice[] dice) {
-        // Prevent scoring in an already scored in category.
-        if (this.scoreSheet.get(scoreType) > 0) {
+        // Prevent scoring in an already scored in category, except for yahtzee.
+        if (scoreType != ScoreType.YAHTZEE && this.scoreSheet.get(scoreType) > 0) {
             return;
         }
 
@@ -53,10 +57,16 @@ public class ScoreSheet {
             break;
         case YAHTZEE:
             this.scoreYahtzee(dice);
-            break;
+            return;
         case CHANCE:
             this.scoreChance(dice);
             break;
+        default:
+            break;
+        }
+
+        if (this.scoringYahtzeeBonus) {
+            this.scoringYahtzeeBonus = false;
         }
     }
 
@@ -147,10 +157,27 @@ public class ScoreSheet {
     }
 
     private void scoreYahtzee(Dice[] dice) {
-        if (Arrays.asList(dice)
-                  .stream()
-                  .allMatch(v -> v.getValue() == dice[0].getValue())) {
+        if (!Arrays.asList(dice)
+                   .stream()
+                   .allMatch(v -> v.getValue() == dice[0].getValue())) {
+            return;
+        }
+
+        if (this.scoreSheet.get(ScoreType.YAHTZEE) == 0) { // First Yahtzee!
             this.scoreSheet.put(ScoreType.YAHTZEE, 50);
+        } else {                                           // Bonus Yahtzee!
+            this.scoreSheet.put(ScoreType.YAHTZEE,
+                                this.scoreSheet.get(ScoreType.YAHTZEE) + 100);
+
+            int value = dice[0].getValue();
+            ScoreType scoreType = ScoreType.values()[value - 1];
+
+            // Score the corresponding upper section if it isn't already scored.
+            if (this.scoreSheet.get(scoreType) == 0) {
+                this.scoreSheet.put(scoreType, value * 5);
+            } else {
+                this.scoringYahtzeeBonus = true;
+            }
         }
     }
 
@@ -176,6 +203,10 @@ public class ScoreSheet {
                               .stream()
                               .mapToInt(Integer::intValue)
                               .sum();
+    }
+
+    public boolean canScoreYahtzeeBonus() {
+        return this.scoringYahtzeeBonus;
     }
 
     public HashMap<ScoreType, Integer> getScoreSheet() {
