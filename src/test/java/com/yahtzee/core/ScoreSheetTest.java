@@ -431,6 +431,36 @@ public class ScoreSheetTest extends TestCase {
         assertEquals(0, ss.calculateScore());
     }
 
+    public void testScoringYahtzee() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(6, 6, 6, 6, 6);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.YAHTZEE));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.YAHTZEE, dice);
+
+        assertEquals(Integer.valueOf(50),
+                     ss.getScoreSheet().get(ScoreType.YAHTZEE));
+        assertEquals(50, ss.calculateScore());
+    }
+
+    public void testNotScoringYahtzee() {
+        ScoreSheet ss = new ScoreSheet();
+        Dice[] dice = createDiceArray(1, 6, 6, 6, 6);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.YAHTZEE));
+        assertEquals(0, ss.calculateScore());
+
+        ss.score(ScoreType.YAHTZEE, dice);
+
+        assertEquals(Integer.valueOf(0),
+                     ss.getScoreSheet().get(ScoreType.YAHTZEE));
+        assertEquals(0, ss.calculateScore());
+    }
+
     public void testScoringInSameCategory() {
         ScoreSheet ss = new ScoreSheet();
         Dice[] dice = createDiceArray(1, 1, 1, 1, 1);
