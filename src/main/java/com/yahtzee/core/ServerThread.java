@@ -84,4 +84,32 @@ public class ServerThread extends Thread {
 
         return true;
     }
+
+    public void outputScoreboard(ArrayList<Player> players) {
+        out.println(players.get(this.playerIndex));
+        out.println();
+
+        if (this.playerIndex == 0) {
+            out.println(players.get(1));
+            out.println();
+
+            if (players.size() == 3) {
+                out.println(players.get(2));
+            }
+        } else if (this.playerIndex == 1) {
+            out.println(players.get(0));
+            out.println();
+
+            if (players.size() == 3) {
+                out.println(players.get(2));
+            }
+        } else if (this.playerIndex == 2) {
+            out.println(players.get(1));
+            out.println();
+
+            if (players.size() == 3) {
+                out.println(players.get(2));
+            }
+        }
+    }
 }

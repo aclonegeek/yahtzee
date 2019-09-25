@@ -49,13 +49,17 @@ public class Server {
         }
     }
 
+    public void broadcastScoreboard() {
+        this.clients.forEach(c -> c.outputScoreboard(this.players));
+    }
+
     public boolean isGameActive() {
         return this.gameActive;
     }
 
     public void setGameActive(boolean gameActive) {
         this.gameActive = gameActive;
-        this.currentPlayer = this.players.get(0);
+        this.broadcastScoreboard();
     }
 
     public void addPlayer(Player player) {
