@@ -40,7 +40,10 @@ public class Player {
 
     // Format: Numbers separated by spaces (i.e. 2 3 4 5).
     public void reroll(String diceToHoldString) {
-        if (this.rollsCounter >= 3 || diceToHoldString.isEmpty()) {
+        if (this.rollsCounter >= 3) {
+            return;
+        } else if (diceToHoldString.isEmpty()) { // Re-roll everything!
+            this.roll();
             return;
         }
 
