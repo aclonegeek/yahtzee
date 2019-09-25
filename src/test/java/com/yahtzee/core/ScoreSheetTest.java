@@ -217,6 +217,8 @@ public class ScoreSheetTest extends TestCase {
         dice = createDiceArray(4, 4, 4, 4, 4);
         ss.score(ScoreType.FOURS, dice);
 
+        assertEquals(Integer.valueOf(35),
+                     ss.getScoreSheet().get(ScoreType.BONUS));
         assertEquals((6 * 5) + (5 * 5) + (4 * 5) + 35,
                      ss.calculateScore());
     }
