@@ -96,4 +96,13 @@ public class PlayerTest extends TestCase {
         assertEquals(fourthDiceValue, pDice[3].getValue());
         assertEquals(fifthDiceValue, pDice[4].getValue());
     }
+
+    public void testReRollAllDice() {
+        Player p = new Player("p");
+        assertEquals(0, p.getNumberOfRolls());
+        p.roll();
+        assertEquals(1, p.getNumberOfRolls());
+        p.reroll("");
+        assertEquals(2, p.getNumberOfRolls());
+    }
 }
