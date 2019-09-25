@@ -7,8 +7,8 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 
 public class Server {
-    private ArrayList<ServerThread> clients;
-    private ArrayList<Player> players;
+    private final ArrayList<ServerThread> clients;
+    private final ArrayList<Player> players;
 
     private int currentPlayer;
     private boolean gameActive;
@@ -28,14 +28,18 @@ public class Server {
     public Server() {
         this.clients = new ArrayList<>();
         this.players = new ArrayList<>();
+        this.currentPlayer = 0;
+        this.gameActive = false;
     }
 
     public void start(int port) {
-        System.out.println("Waiting for players to join...");
-
         try (ServerSocket serverSocket = new ServerSocket(port)) {
+            System.out.println("Waiting for players to join...");
+
             while (true) {
-                ServerThread serverThread = new ServerThread(this, serverSocket.accept());
+                ServerThread serverThread = new ServerThread(this,
+                                                             serverSocket.accept(),
+                                                             this.clients.size());
                 this.clients.add(serverThread);
                 serverThread.start();
             }
