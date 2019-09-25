@@ -14,7 +14,6 @@ public class ServerThread extends Thread {
         WAITING_ON_ROLL,
         POST_ROLL_ACTION,
         HOLD_AND_REROLL,
-        REROLL_ALL,
         SCORE,
     };
     private GameState gameState;
@@ -104,7 +103,7 @@ public class ServerThread extends Thread {
         case WAITING_ON_ROLL:
             switch (input) {
             case "": // Enter.
-                this.rollDice();
+                this.roll();
                 this.gameState = GameState.POST_ROLL_ACTION;
                 break;
             }
@@ -115,7 +114,7 @@ public class ServerThread extends Thread {
                 this.gameState = GameState.HOLD_AND_REROLL;
                 break;
             case "2":
-                this.gameState = GameState.REROLL_ALL;
+                this.reroll("");
                 break;
             case "3":
                 this.gameState = GameState.SCORE;
@@ -124,6 +123,10 @@ public class ServerThread extends Thread {
                 this.out.println("Invalid command \"" + input + "\"");
                 break;
             }
+            break;
+        case HOLD_AND_REROLL:
+            this.reroll(input);
+            this.gameState = GameState.POST_ROLL_ACTION;
             break;
         }
 
@@ -158,10 +161,19 @@ public class ServerThread extends Thread {
         }
     }
 
-    private void rollDice() {
+    private void roll() {
         Dice[] dice = this.player.getDice();
         this.player.roll();
+        this.outputRoll(dice);
+    }
 
+    private void reroll(String diceToHold) {
+        Dice[] dice = this.player.getDice();
+        this.player.reroll(diceToHold);
+        this.outputRoll(dice);
+    }
+
+    private void outputRoll(Dice[] dice) {
         this.out.println("              -----   -----   -----   -----   -----");
         this.out.println("You rolled:   " +
                          "| " + dice[0].getValue() + " |   " +
@@ -187,8 +199,6 @@ public class ServerThread extends Thread {
         case HOLD_AND_REROLL:
             this.out.println("Please enter in the dice position that you want to hold. " +
                              "Please seperate each number with a <<SPACE>>:");
-            break;
-        case REROLL_ALL:
             break;
         case SCORE:
             this.out.println("What category do you want to score this round against? " +
