@@ -53,6 +53,10 @@ public class Server {
         this.clients.forEach(c -> c.outputScoreboard(this.players));
     }
 
+    public void broadcastWinner(String name, int points) {
+        this.clients.forEach(c -> c.outputWinner(name, points));
+    }
+
     public boolean isGameActive() {
         return this.gameActive;
     }
@@ -71,7 +75,14 @@ public class Server {
         System.out.println("Player " + (this.currentPlayer + 1) + " has completed their turn.");
 
         if (this.currentPlayer == 2) {
-            System.out.println("Round " + (this.players.get(2).getTurn() - 1) + " is complete.\n");
+            int round = this.players.get(2).getTurn() - 1;
+            System.out.println("Round " + round + " is complete.\n");
+
+            // Game is done.
+            if (round == 13) {
+                determineWinner();
+                return;
+            }
         }
 
         this.broadcastScoreboard();
@@ -95,5 +106,19 @@ public class Server {
 
     public int getCurrentPlayer() {
         return this.currentPlayer;
+    }
+
+    private void determineWinner() {
+        String winnerName = "";
+        int highestScore = 0;
+        for (Player p : this.players) {
+            if (p.getScore() > highestScore) {
+                highestScore = p.getScore();
+                winnerName = p.getName();
+            }
+        }
+
+        this.broadcastWinner(winnerName, highestScore);
+        System.out.println("Game Complete");
     }
 }

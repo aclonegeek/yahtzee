@@ -147,7 +147,7 @@ public class ServerThread extends Thread {
         case SCORE:
             this.score(input);
             this.player.finishTurn();
-            if (this.player.getTurn() > 12) {
+            if (this.player.getTurn() > 13) {
                 this.gameState = GameState.DONE;
             } else {
                 this.gameState = GameState.WAITING_ON_ROLL;
@@ -187,6 +187,14 @@ public class ServerThread extends Thread {
                 out.println(players.get(0));
             }
         }
+    }
+
+    public void outputWinner(String name, int points) {
+        this.out.println("Congratulations, " + name + " has won the game " +
+                         "with a score of " + points + " points!!!!!");
+        this.out.println("Great game everyone, and thanks for playing. Goodbye.");
+        this.out.println();
+        this.out.println("So Long, And Thanks For All The Fish!");
     }
 
     private void roll() {
