@@ -77,6 +77,12 @@ public class ServerThread extends Thread {
             while (true) {
                 if (!this.server.isGameActive() ||
                     this.server.getCurrentPlayer() != this.playerIndex) {
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                     continue;
                 }
 
