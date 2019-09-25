@@ -202,7 +202,7 @@ public class ScoreSheetTest extends TestCase {
         dice = createDiceArray(2, 2, 2, 2, 1);
         ss.score(ScoreType.TWOS, dice);
 
-        assertEquals((6 * 5) + (5 * 5) + (2 * 4) + 35,
+        assertEquals(63 + 35,
                      ss.calculateScore());
     }
 
