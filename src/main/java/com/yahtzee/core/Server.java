@@ -62,4 +62,8 @@ public class Server {
     public ArrayList<Player> getPlayers() {
         return this.players;
     }
+
+    public int getCurrentPlayer() {
+        return this.currentPlayer;
+    }
 }
