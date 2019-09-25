@@ -115,6 +115,11 @@ public class ServerThread extends Thread {
                 break;
             case "2":
                 this.reroll("");
+                if (this.player.getNumberOfRolls() >= 3) {
+                    this.gameState = GameState.SCORE;
+                } else {
+                    this.gameState = GameState.POST_ROLL_ACTION;
+                }
                 break;
             case "3":
                 this.gameState = GameState.SCORE;
@@ -126,7 +131,11 @@ public class ServerThread extends Thread {
             break;
         case HOLD_AND_REROLL:
             this.reroll(input);
-            this.gameState = GameState.POST_ROLL_ACTION;
+            if (this.player.getNumberOfRolls() >= 3) {
+                this.gameState = GameState.SCORE;
+            } else {
+                this.gameState = GameState.POST_ROLL_ACTION;
+            }
             break;
         }
 
