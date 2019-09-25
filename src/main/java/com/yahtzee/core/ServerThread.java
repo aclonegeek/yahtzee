@@ -167,6 +167,10 @@ public class ServerThread extends Thread {
     }
 
     public void outputScoreboard(ArrayList<Player> players) {
+        out.println();
+        out.println();
+        out.println();
+
         out.println(players.get(this.playerIndex));
         out.println();
 
