@@ -67,6 +67,28 @@ public class Server {
         this.players.add(player);
     }
 
+    public void nextPlayer() {
+        System.out.println("Player " + (this.currentPlayer + 1) + " has completed their turn.");
+
+        if (this.currentPlayer == 2) {
+            System.out.println("Round " + (this.players.get(2).getTurn() - 1) + " is complete.\n");
+        }
+
+        this.broadcastScoreboard();
+
+        switch (this.currentPlayer) {
+        case 0:
+            this.currentPlayer = 1;
+            break;
+        case 1:
+            this.currentPlayer = 2;
+            break;
+        case 2:
+            this.currentPlayer = 0;
+            break;
+        }
+    }
+
     public ArrayList<Player> getPlayers() {
         return this.players;
     }

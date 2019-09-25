@@ -92,6 +92,10 @@ public class Player {
         return this.rollsCounter;
     }
 
+    public int getTurn() {
+        return this.turn;
+    }
+
     @Override
     public String toString() {
         HashMap<ScoreType, Integer> scoreSheet = this.scoreSheet.getScoreSheet();

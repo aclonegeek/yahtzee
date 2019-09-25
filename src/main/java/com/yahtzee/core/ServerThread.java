@@ -15,6 +15,7 @@ public class ServerThread extends Thread {
         POST_ROLL_ACTION,
         HOLD_AND_REROLL,
         SCORE,
+        DONE,
     };
     private GameState gameState;
 
@@ -39,7 +40,7 @@ public class ServerThread extends Thread {
     @Override
     public void run() {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));) {
-            out.println("Welcome player " + (this.playerIndex + 1) + ", please enter your name: ");
+            this.out.println("Welcome player " + (this.playerIndex + 1) + ", please enter your name: ");
 
             String input;
 
@@ -62,7 +63,7 @@ public class ServerThread extends Thread {
                         }
 
                         if (input.equals("y")) {
-                            System.out.println("The game is starting!");
+                            System.out.println("The game is starting!\n");
                             this.server.setGameActive(true);
                             break;
                         }
@@ -143,6 +144,18 @@ public class ServerThread extends Thread {
                 this.gameState = GameState.POST_ROLL_ACTION;
             }
             break;
+        case SCORE:
+            this.score(input);
+            this.player.finishTurn();
+            if (this.player.getTurn() > 12) {
+                this.gameState = GameState.DONE;
+            } else {
+                this.gameState = GameState.WAITING_ON_ROLL;
+            }
+            this.server.nextPlayer();
+            break;
+        default:
+            break;
         }
 
         return true;
@@ -186,6 +199,11 @@ public class ServerThread extends Thread {
         Dice[] dice = this.player.getDice();
         this.player.reroll(diceToHold);
         this.outputRoll(dice);
+    }
+
+    private void score(String category) {
+        ScoreType scoreType = ScoreType.values()[Integer.parseInt(category) - 1];
+        this.player.score(scoreType);
     }
 
     private void outputRoll(Dice[] dice) {
