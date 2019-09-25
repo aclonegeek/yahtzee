@@ -15,6 +15,7 @@ public class ServerThread extends Thread {
         POST_ROLL_ACTION,
         HOLD_AND_REROLL,
         SCORE,
+        SCORE_YAHTZEE_BONUS,
         DONE,
     };
     private GameState gameState;
@@ -146,6 +147,10 @@ public class ServerThread extends Thread {
             break;
         case SCORE:
             this.score(input);
+            if (this.gameState == GameState.SCORE_YAHTZEE_BONUS) {
+                break;
+            }
+
             this.player.finishTurn();
             if (this.player.getTurn() > 13) {
                 this.gameState = GameState.DONE;
@@ -212,6 +217,11 @@ public class ServerThread extends Thread {
     private void score(String category) {
         ScoreType scoreType = ScoreType.values()[Integer.parseInt(category) - 1];
         this.player.score(scoreType);
+
+        if (scoreType == ScoreType.YAHTZEE &&
+            this.player.getScoreSheet().canScoreYahtzeeBonus()) {
+            this.gameState = GameState.SCORE_YAHTZEE_BONUS;
+        }
     }
 
     private void outputRoll(Dice[] dice) {
@@ -244,6 +254,11 @@ public class ServerThread extends Thread {
         case SCORE:
             this.out.println("What category do you want to score this round against? " +
                              "(Please enter the category number)");
+            break;
+        case SCORE_YAHTZEE_BONUS:
+            this.out.println("What category do you want to score this yahtzee bonus against? " +
+                             "(Please enter the category number)");
+            this.gameState = GameState.SCORE;
             break;
         default:
             break;
