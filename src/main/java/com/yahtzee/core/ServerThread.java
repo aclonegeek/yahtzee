@@ -39,7 +39,7 @@ public class ServerThread extends Thread {
 
                 this.server.addPlayer(new Player(input));
 
-                if (this.server.getPlayers().size() == 1) {
+                if (this.playerIndex == 0) {
                     out.println("Ready Player One? (y)");
                 } else {
                     out.println("Waiting for player 1 to start the game...");
@@ -72,7 +72,10 @@ public class ServerThread extends Thread {
     private boolean processInput(PrintWriter out, BufferedReader in, String input) {
         switch (input) {
         case "y":
-            this.server.setGameActive(true);
+            if (this.playerIndex == 0) {
+                System.out.println("The game is starting!");
+                this.server.setGameActive(true);
+            }
             break;
         case "q":
             this.server.setGameActive(false);
