@@ -7,51 +7,54 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ServerThread extends Thread {
-    private Server server;
-    private Socket socket;
+    private final Server server;
+    private final Socket socket;
 
-    private int playerIndex;
+    private final PrintWriter out;
 
-    public ServerThread(Server server, Socket socket) {
+    private final int playerIndex;
+
+    public ServerThread(Server server, Socket socket, int index) throws IOException {
         this.server = server;
         this.socket = socket;
-        this.playerIndex = server.getPlayers().size();
+
+        this.out = new PrintWriter(socket.getOutputStream(), true);
+
+        this.playerIndex = index;
     }
 
+    @Override
     public void run() {
-        try (PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
-             BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));) {
-            boolean isNewUser = true;
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));) {
             out.println("Welcome player " + (this.playerIndex + 1) + ", please enter your name: ");
 
-            boolean waiting = false;
-
             while (true) {
-                if (waiting) {
-                    continue;
-                }
-
                 String input = in.readLine();
                 if (input == null) {
                     continue;
                 }
 
-                if (isNewUser) {
-                    this.server.addPlayer(new Player(input));
+                this.server.addPlayer(new Player(input));
 
-                    if (!this.server.isGameActive()) { // TODO(randy): Probably remove this check.
-                        if (this.server.getPlayers().size() == 1) {
-                            out.println("Ready Player One? (y)");
-                        } else {
-                            out.println("Waiting for player 1 to start the game...");
-                            waiting = true;
-                        }
-                    }
+                if (this.server.getPlayers().size() == 1) {
+                    out.println("Ready Player One? (y)");
+                } else {
+                    out.println("Waiting for player 1 to start the game...");
+                }
 
-                    isNewUser = false;
+                break;
+            }
 
+            while (true) {
+                String input = in.readLine();
+                if (input == null) {
+                    continue;
+                }
+
+                if (this.server.getCurrentPlayer() != this.playerIndex) {
                     continue;
                 }
 
