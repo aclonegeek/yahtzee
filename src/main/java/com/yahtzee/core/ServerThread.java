@@ -10,11 +10,21 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class ServerThread extends Thread {
+    private enum GameState {
+        WAITING_ON_ROLL,
+        POST_ROLL_ACTION,
+        HOLD_AND_REROLL,
+        REROLL_ALL,
+        SCORE,
+    };
+    private GameState gameState;
+
     private final Server server;
     private final Socket socket;
 
     private final PrintWriter out;
 
+    private Player player;
     private final int playerIndex;
 
     public ServerThread(Server server, Socket socket, int index) throws IOException {
@@ -24,6 +34,7 @@ public class ServerThread extends Thread {
         this.out = new PrintWriter(socket.getOutputStream(), true);
 
         this.playerIndex = index;
+        this.gameState = GameState.WAITING_ON_ROLL;
     }
 
     @Override
@@ -39,7 +50,8 @@ public class ServerThread extends Thread {
                     continue;
                 }
 
-                this.server.addPlayer(new Player(input));
+                this.player = new Player(input);
+                this.server.addPlayer(this.player);
 
                 if (this.playerIndex == 0) {
                     out.println("Ready Player One? (y)");
@@ -69,7 +81,7 @@ public class ServerThread extends Thread {
                     continue;
                 }
 
-                this.out.println("Press <<ENTER>> to roll the dice...");
+                this.outputPrompt();
 
                 input = in.readLine();
                 if (input == null) {
@@ -88,9 +100,30 @@ public class ServerThread extends Thread {
     }
 
     private boolean processInput(BufferedReader in, String input) {
-        switch (input) {
-        default:
-            this.out.println("Invalid command \"" + input + "\"");
+        switch (this.gameState) {
+        case WAITING_ON_ROLL:
+            switch (input) {
+            case "": // Enter.
+                this.rollDice();
+                this.gameState = GameState.POST_ROLL_ACTION;
+                break;
+            }
+            break;
+        case POST_ROLL_ACTION:
+            switch (input) {
+            case "1":
+                this.gameState = GameState.HOLD_AND_REROLL;
+                break;
+            case "2":
+                this.gameState = GameState.REROLL_ALL;
+                break;
+            case "3":
+                this.gameState = GameState.SCORE;
+                break;
+            default:
+                this.out.println("Invalid command \"" + input + "\"");
+                break;
+            }
             break;
         }
 
@@ -120,8 +153,49 @@ public class ServerThread extends Thread {
             out.println();
 
             if (players.size() == 3) {
-                out.println(players.get(2));
+                out.println(players.get(0));
             }
+        }
+    }
+
+    private void rollDice() {
+        Dice[] dice = this.player.getDice();
+        this.player.roll();
+
+        this.out.println("              -----   -----   -----   -----   -----");
+        this.out.println("You rolled:   " +
+                         "| " + dice[0].getValue() + " |   " +
+                         "| " + dice[1].getValue() + " |   " +
+                         "| " + dice[2].getValue() + " |   " +
+                         "| " + dice[3].getValue() + " |   " +
+                         "| " + dice[4].getValue() + " |   "
+                         );
+        this.out.println("              -----   -----   -----   -----   -----");
+    }
+
+    private void outputPrompt() {
+        switch (this.gameState) {
+        case WAITING_ON_ROLL:
+            this.out.println("Press <<ENTER>> to roll the dice...");
+            break;
+        case POST_ROLL_ACTION:
+            this.out.println("What action would you like to perform next?");
+            this.out.println(" (1) Select dice to hold, and then re-roll the other dice?");
+            this.out.println(" (2) Re-roll all the dice?");
+            this.out.println(" (3) Score this round?");
+            break;
+        case HOLD_AND_REROLL:
+            this.out.println("Please enter in the dice position that you want to hold. " +
+                             "Please seperate each number with a <<SPACE>>:");
+            break;
+        case REROLL_ALL:
+            break;
+        case SCORE:
+            this.out.println("What category do you want to score this round against? " +
+                             "(Please enter the category number)");
+            break;
+        default:
+            break;
         }
     }
 }
