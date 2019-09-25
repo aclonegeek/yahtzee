@@ -31,8 +31,10 @@ public class ServerThread extends Thread {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));) {
             out.println("Welcome player " + (this.playerIndex + 1) + ", please enter your name: ");
 
+            String input;
+
             while (true) {
-                String input = in.readLine();
+                input = in.readLine();
                 if (input == null) {
                     continue;
                 }
@@ -41,6 +43,19 @@ public class ServerThread extends Thread {
 
                 if (this.playerIndex == 0) {
                     out.println("Ready Player One? (y)");
+
+                    while (true) {
+                        input = in.readLine();
+                        if (input == null) {
+                            continue;
+                        }
+
+                        if (input.equals("y")) {
+                            System.out.println("The game is starting!");
+                            this.server.setGameActive(true);
+                            break;
+                        }
+                    }
                 } else {
                     out.println("Waiting for player 1 to start the game...");
                 }
@@ -49,12 +64,15 @@ public class ServerThread extends Thread {
             }
 
             while (true) {
-                String input = in.readLine();
-                if (input == null) {
+                if (!this.server.isGameActive() ||
+                    this.server.getCurrentPlayer() != this.playerIndex) {
                     continue;
                 }
 
-                if (this.server.getCurrentPlayer() != this.playerIndex) {
+                this.out.println("Press <<ENTER>> to roll the dice...");
+
+                input = in.readLine();
+                if (input == null) {
                     continue;
                 }
 
@@ -71,15 +89,6 @@ public class ServerThread extends Thread {
 
     private boolean processInput(BufferedReader in, String input) {
         switch (input) {
-        case "y":
-            if (this.playerIndex == 0) {
-                System.out.println("The game is starting!");
-                this.server.setGameActive(true);
-            }
-            break;
-        case "q":
-            this.server.setGameActive(false);
-            return false;
         default:
             this.out.println("Invalid command \"" + input + "\"");
             break;
