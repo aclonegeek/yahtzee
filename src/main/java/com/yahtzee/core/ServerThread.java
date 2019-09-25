@@ -58,7 +58,7 @@ public class ServerThread extends Thread {
                     continue;
                 }
 
-                if (!processInput(out, in, input)) {
+                if (!processInput(in, input)) {
                     break;
                 }
             }
@@ -69,7 +69,7 @@ public class ServerThread extends Thread {
         }
     }
 
-    private boolean processInput(PrintWriter out, BufferedReader in, String input) {
+    private boolean processInput(BufferedReader in, String input) {
         switch (input) {
         case "y":
             if (this.playerIndex == 0) {
@@ -81,7 +81,7 @@ public class ServerThread extends Thread {
             this.server.setGameActive(false);
             return false;
         default:
-            out.println("Invalid command \"" + input + "\"");
+            this.out.println("Invalid command \"" + input + "\"");
             break;
         }
 
