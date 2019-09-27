@@ -79,7 +79,7 @@ public class Server {
             System.out.println("Round " + round + " is complete.\n");
 
             // Game is done.
-            if (round == 13) {
+            if (round == Globals.MAX_ROUNDS) {
                 determineWinner();
                 return;
             }

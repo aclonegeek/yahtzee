@@ -87,7 +87,7 @@ public class ScoreSheet {
         //     b. It hasn't be scored yet.
         if (calculateUpperSectionScoreWithoutBonus() >= 63 &&
             this.scoreSheet.get(ScoreType.BONUS) == 0) {
-            this.scoreSheet.put(ScoreType.BONUS, 35);
+            this.scoreSheet.put(ScoreType.BONUS, Globals.UPPER_SECTION_BONUS_SCORE);
         }
     }
 
@@ -125,7 +125,7 @@ public class ScoreSheet {
         }
 
         if (twoDiceSame && threeDiceSame) {
-            this.scoreSheet.put(ScoreType.FULL_HOUSE, 25);
+            this.scoreSheet.put(ScoreType.FULL_HOUSE, Globals.FULL_HOUSE_SCORE);
         }
     }
 
@@ -153,7 +153,8 @@ public class ScoreSheet {
         }
 
         this.scoreSheet.put(scoreType,
-                            scoreType == ScoreType.SMALL_STRAIGHT ? 30 : 40);
+                            scoreType == ScoreType.SMALL_STRAIGHT ?
+                            Globals.SMALL_STRAIGHT_SCORE : Globals.LARGE_STRAIGHT_SCORE);
     }
 
     private void scoreYahtzee(Dice[] dice) {
@@ -164,10 +165,10 @@ public class ScoreSheet {
         }
 
         if (this.scoreSheet.get(ScoreType.YAHTZEE) == 0) { // First Yahtzee!
-            this.scoreSheet.put(ScoreType.YAHTZEE, 50);
+            this.scoreSheet.put(ScoreType.YAHTZEE, Globals.YAHTZEE_SCORE);
         } else {                                           // Bonus Yahtzee!
             this.scoreSheet.put(ScoreType.YAHTZEE,
-                                this.scoreSheet.get(ScoreType.YAHTZEE) + 100);
+                                this.scoreSheet.get(ScoreType.YAHTZEE) + Globals.YAHTZEE_BONUS_SCORE);
 
             int value = dice[0].getValue();
             ScoreType scoreType = ScoreType.values()[value - 1];

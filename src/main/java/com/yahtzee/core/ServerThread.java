@@ -123,7 +123,7 @@ public class ServerThread extends Thread {
                 break;
             case "2":
                 this.reroll("");
-                if (this.player.getNumberOfRolls() >= 3) {
+                if (this.player.getNumberOfRolls() >= Globals.MAX_ROLLS) {
                     this.gameState = GameState.SCORE;
                 } else {
                     this.gameState = GameState.POST_ROLL_ACTION;
@@ -139,7 +139,7 @@ public class ServerThread extends Thread {
             break;
         case HOLD_AND_REROLL:
             this.reroll(input);
-            if (this.player.getNumberOfRolls() >= 3) {
+            if (this.player.getNumberOfRolls() >= Globals.MAX_ROLLS) {
                 this.gameState = GameState.SCORE;
             } else {
                 this.gameState = GameState.POST_ROLL_ACTION;
@@ -152,7 +152,7 @@ public class ServerThread extends Thread {
             }
 
             this.player.finishTurn();
-            if (this.player.getTurn() > 13) {
+            if (this.player.getTurn() > Globals.MAX_ROUNDS) {
                 this.gameState = GameState.DONE;
             } else {
                 this.gameState = GameState.WAITING_ON_ROLL;
@@ -178,21 +178,21 @@ public class ServerThread extends Thread {
             out.println(players.get(1));
             out.println();
 
-            if (players.size() == 3) {
+            if (players.size() == Globals.MAX_PLAYERS) {
                 out.println(players.get(2));
             }
         } else if (this.playerIndex == 1) {
             out.println(players.get(0));
             out.println();
 
-            if (players.size() == 3) {
+            if (players.size() == Globals.MAX_PLAYERS) {
                 out.println(players.get(2));
             }
         } else if (this.playerIndex == 2) {
             out.println(players.get(1));
             out.println();
 
-            if (players.size() == 3) {
+            if (players.size() == Globals.MAX_PLAYERS) {
                 out.println(players.get(0));
             }
         }

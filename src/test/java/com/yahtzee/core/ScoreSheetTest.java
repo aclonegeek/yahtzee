@@ -202,7 +202,9 @@ public class ScoreSheetTest extends TestCase {
         dice = createDiceArray(2, 2, 2, 2, 1);
         ss.score(ScoreType.TWOS, dice);
 
-        assertEquals(63 + 35,
+        assertEquals(Integer.valueOf(Globals.UPPER_SECTION_BONUS_SCORE),
+                     ss.getScoreSheet().get(ScoreType.BONUS));
+        assertEquals(63 + Globals.UPPER_SECTION_BONUS_SCORE,
                      ss.calculateScore());
     }
 
@@ -217,9 +219,9 @@ public class ScoreSheetTest extends TestCase {
         dice = createDiceArray(4, 4, 4, 4, 4);
         ss.score(ScoreType.FOURS, dice);
 
-        assertEquals(Integer.valueOf(35),
+        assertEquals(Integer.valueOf(Globals.UPPER_SECTION_BONUS_SCORE),
                      ss.getScoreSheet().get(ScoreType.BONUS));
-        assertEquals((6 * 5) + (5 * 5) + (4 * 5) + 35,
+        assertEquals((6 * 5) + (5 * 5) + (4 * 5) + Globals.UPPER_SECTION_BONUS_SCORE,
                      ss.calculateScore());
     }
 
@@ -293,7 +295,7 @@ public class ScoreSheetTest extends TestCase {
 
         ss.score(ScoreType.FULL_HOUSE, dice);
 
-        assertEquals(Integer.valueOf(25),
+        assertEquals(Integer.valueOf(Globals.FULL_HOUSE_SCORE),
                      ss.getScoreSheet().get(ScoreType.FULL_HOUSE));
         assertEquals(25, ss.calculateScore());
     }
@@ -338,7 +340,7 @@ public class ScoreSheetTest extends TestCase {
 
         ss.score(ScoreType.SMALL_STRAIGHT, dice);
 
-        assertEquals(Integer.valueOf(30),
+        assertEquals(Integer.valueOf(Globals.SMALL_STRAIGHT_SCORE),
                      ss.getScoreSheet().get(ScoreType.SMALL_STRAIGHT));
         assertEquals(30, ss.calculateScore());
     }
@@ -353,7 +355,7 @@ public class ScoreSheetTest extends TestCase {
 
         ss.score(ScoreType.SMALL_STRAIGHT, dice);
 
-        assertEquals(Integer.valueOf(30),
+        assertEquals(Integer.valueOf(Globals.SMALL_STRAIGHT_SCORE),
                      ss.getScoreSheet().get(ScoreType.SMALL_STRAIGHT));
         assertEquals(30, ss.calculateScore());
     }
@@ -368,7 +370,7 @@ public class ScoreSheetTest extends TestCase {
 
         ss.score(ScoreType.SMALL_STRAIGHT, dice);
 
-        assertEquals(Integer.valueOf(30),
+        assertEquals(Integer.valueOf(Globals.SMALL_STRAIGHT_SCORE),
                      ss.getScoreSheet().get(ScoreType.SMALL_STRAIGHT));
         assertEquals(30, ss.calculateScore());
     }
@@ -413,7 +415,7 @@ public class ScoreSheetTest extends TestCase {
 
         ss.score(ScoreType.LARGE_STRAIGHT, dice);
 
-        assertEquals(Integer.valueOf(40),
+        assertEquals(Integer.valueOf(Globals.LARGE_STRAIGHT_SCORE),
                      ss.getScoreSheet().get(ScoreType.LARGE_STRAIGHT));
         assertEquals(40, ss.calculateScore());
     }
@@ -428,7 +430,7 @@ public class ScoreSheetTest extends TestCase {
 
         ss.score(ScoreType.LARGE_STRAIGHT, dice);
 
-        assertEquals(Integer.valueOf(40),
+        assertEquals(Integer.valueOf(Globals.LARGE_STRAIGHT_SCORE),
                      ss.getScoreSheet().get(ScoreType.LARGE_STRAIGHT));
         assertEquals(40, ss.calculateScore());
     }
@@ -458,7 +460,7 @@ public class ScoreSheetTest extends TestCase {
 
         ss.score(ScoreType.YAHTZEE, dice);
 
-        assertEquals(Integer.valueOf(50),
+        assertEquals(Integer.valueOf(Globals.YAHTZEE_SCORE),
                      ss.getScoreSheet().get(ScoreType.YAHTZEE));
         assertEquals(50, ss.calculateScore());
     }
@@ -499,7 +501,7 @@ public class ScoreSheetTest extends TestCase {
 
         ss.score(ScoreType.YAHTZEE, dice);
 
-        assertEquals(Integer.valueOf(50),
+        assertEquals(Integer.valueOf(Globals.YAHTZEE_SCORE),
                      ss.getScoreSheet().get(ScoreType.YAHTZEE));
         assertEquals(50, ss.calculateScore());
 
@@ -507,7 +509,7 @@ public class ScoreSheetTest extends TestCase {
 
         assertEquals(Integer.valueOf(30),
                      ss.getScoreSheet().get(ScoreType.SIXES));
-        assertEquals(Integer.valueOf(150),
+        assertEquals(Integer.valueOf(Globals.YAHTZEE_SCORE + Globals.YAHTZEE_BONUS_SCORE),
                      ss.getScoreSheet().get(ScoreType.YAHTZEE));
         assertEquals(180, ss.calculateScore());
     }
@@ -521,13 +523,13 @@ public class ScoreSheetTest extends TestCase {
 
         assertEquals(Integer.valueOf(30),
                      ss.getScoreSheet().get(ScoreType.SIXES));
-        assertEquals(Integer.valueOf(50),
+        assertEquals(Integer.valueOf(Globals.YAHTZEE_SCORE),
                      ss.getScoreSheet().get(ScoreType.YAHTZEE));
         assertEquals(80, ss.calculateScore());
 
         ss.score(ScoreType.YAHTZEE, dice);
 
-        assertEquals(Integer.valueOf(150),
+        assertEquals(Integer.valueOf(Globals.YAHTZEE_SCORE + Globals.YAHTZEE_BONUS_SCORE),
                      ss.getScoreSheet().get(ScoreType.YAHTZEE));
         assertEquals(180, ss.calculateScore());
 
