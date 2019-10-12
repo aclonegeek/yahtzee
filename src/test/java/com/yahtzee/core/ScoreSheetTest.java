@@ -235,9 +235,9 @@ public class ScoreSheetTest extends TestCase {
 
         ss.score(ScoreType.THREE_OF_A_KIND, dice);
 
-        assertEquals(Integer.valueOf(18),
+        assertEquals(Integer.valueOf(21),
                      ss.getScoreSheet().get(ScoreType.THREE_OF_A_KIND));
-        assertEquals(18, ss.calculateScore());
+        assertEquals(21, ss.calculateScore());
     }
 
     public void testNotScoringThreeOfAKind() {
@@ -265,9 +265,9 @@ public class ScoreSheetTest extends TestCase {
 
         ss.score(ScoreType.FOUR_OF_A_KIND, dice);
 
-        assertEquals(Integer.valueOf(24),
+        assertEquals(Integer.valueOf(25),
                      ss.getScoreSheet().get(ScoreType.FOUR_OF_A_KIND));
-        assertEquals(24, ss.calculateScore());
+        assertEquals(25, ss.calculateScore());
     }
 
     public void testNotScoringFourOfAKind() {

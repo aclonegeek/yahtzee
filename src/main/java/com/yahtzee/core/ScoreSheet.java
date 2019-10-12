@@ -91,20 +91,23 @@ public class ScoreSheet {
         }
     }
 
-    private void scoreThreeOrFourOfAKind(ScoreType scoreType, Dice[] dice) {
-        int countDesired = scoreType == ScoreType.THREE_OF_A_KIND ? 3 : 4;
+    private void scoreThreeOrFourOfAKind(final ScoreType scoreType, final Dice[] dice) {
+        final int countDesired = scoreType == ScoreType.THREE_OF_A_KIND ? 3 : 4;
         int[] occurences = new int[] {0, 0, 0, 0, 0, 0};
 
         for (Dice d : dice) {
             occurences[d.getValue() - 1]++;
         }
 
-        for (int i = 0; i < occurences.length; i++) {
-            if (occurences[i] == countDesired) {
-                this.scoreSheet.put(scoreType, countDesired * (i + 1));
-                return;
-            }
+        if (!Arrays.stream(occurences).anyMatch(v -> v == countDesired)) {
+            return;
         }
+
+        int score = 0;
+        for (Dice d : dice) {
+            score += d.getValue();
+        }
+        this.scoreSheet.put(scoreType, score);
     }
 
     private void scoreFullHouse(Dice[] dice) {
