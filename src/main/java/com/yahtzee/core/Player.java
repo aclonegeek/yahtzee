@@ -96,6 +96,18 @@ public class Player {
         return this.turn;
     }
 
+    public void setDice(final String diceString) {
+        int[] dice = Arrays.stream(diceString.split(" "))
+                           .mapToInt(Integer::parseInt)
+                           .toArray();
+
+        this.dice[0].setValue(dice[0]);
+        this.dice[1].setValue(dice[1]);
+        this.dice[2].setValue(dice[2]);
+        this.dice[3].setValue(dice[3]);
+        this.dice[4].setValue(dice[4]);
+    }
+
     @Override
     public String toString() {
         HashMap<ScoreType, Integer> scoreSheet = this.scoreSheet.getScoreSheet();
