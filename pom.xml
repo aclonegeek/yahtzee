@@ -30,11 +30,11 @@
       <artifactId>cucumber-java8</artifactId>
       <version>4.7.4</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/info.cukes/cucumber-junit -->
+    <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-junit -->
     <dependency>
-      <groupId>info.cukes</groupId>
+      <groupId>io.cucumber</groupId>
       <artifactId>cucumber-junit</artifactId>
-      <version>1.2.5</version>
+      <version>4.7.4</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
