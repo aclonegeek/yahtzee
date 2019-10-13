@@ -13,3 +13,9 @@ Feature: Scoring Upper and Lower Sections
       | "1 1 1 2 3" | "Aces"    |     3 |
       | "1 1 1 1 2" | "Aces"    |     4 |
       | "1 1 1 1 1" | "Aces"    |     5 |
+      | "1 3 4 5 6" | "Twos"    |     0 |
+      | "1 2 3 4 5" | "Twos"    |     2 |
+      | "2 1 2 3 4" | "Twos"    |     4 |
+      | "2 2 1 2 3" | "Twos"    |     6 |
+      | "2 2 6 2 2" | "Twos"    |     8 |
+      | "2 2 2 2 2" | "Twos"    |    10 |
