@@ -1,6 +1,7 @@
 /target/
 
 *.class
+*.tmp
 
 .classpath
 .project
