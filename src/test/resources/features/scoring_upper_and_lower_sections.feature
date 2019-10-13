@@ -1,6 +1,6 @@
-Feature: Scoring Aces
+Feature: Scoring Upper and Lower Sections
 
-  Scenario Outline: Scoring Aces
+  Scenario Outline: Scoring Upper and Lower Sections
     Given I have rolled the dice <dice>
     When I score my roll in the <scoreType> section
     Then the <scoreType> section should be <score>
