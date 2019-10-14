@@ -49,6 +49,7 @@ public class Stepdefs implements En {
         this.player = new Player("Cucumber");
         this.scoreSheet = this.player.getScoreSheet().getScoreSheet();
 
+        // Scoring Upper & Lower section (no bonuses).
         Given("I have rolled the dice {string}", (final String dice) -> {
                 this.player.setDice(dice);
             });
@@ -59,6 +60,36 @@ public class Stepdefs implements En {
         Then("the {string} section should be {int}", (final String scoreTypeString, final Integer score) -> {
                 assertEquals(score,
                              this.scoreSheet.get(createScoreTypeFromString(scoreTypeString)));
+            });
+
+        // Scoring Upper Section bonus.
+        Given("I have a score of {int} in the upper section", (final Integer upperSectionScore) -> {
+                if (upperSectionScore == 63) {
+                    this.player.setDice("4 4 1 1 1");
+                    this.player.score(ScoreType.FOURS);
+                    this.player.setDice("5 5 5 5 5");
+                    this.player.score(ScoreType.FIVES);
+                    this.player.setDice("6 6 6 6 6");
+                    this.player.score(ScoreType.SIXES);
+                } else if (upperSectionScore == 69) {
+                    this.player.setDice("2 1 1 1 1");
+                    this.player.score(ScoreType.TWOS);
+                    this.player.setDice("4 4 4 2 1");
+                    this.player.score(ScoreType.FOURS);
+                    this.player.setDice("5 5 5 5 5");
+                    this.player.score(ScoreType.FIVES);
+                    this.player.setDice("6 6 6 6 6");
+                    this.player.score(ScoreType.SIXES);
+                }
+
+                assertEquals(upperSectionScore,
+                             Integer.valueOf(this.player
+                                                 .getScoreSheet()
+                                                 .calculateUpperSectionScoreWithoutBonus()));
+            });
+        Then("the upper section bonus should be {int}", (final Integer score) -> {
+                assertEquals(score,
+                             this.scoreSheet.get(ScoreType.BONUS));
             });
     }
 }

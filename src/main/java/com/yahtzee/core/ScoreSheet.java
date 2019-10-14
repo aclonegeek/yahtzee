@@ -85,7 +85,7 @@ public class ScoreSheet {
         // Score the upper section bonus if:
         //     a. It is eligible to be scored, and
         //     b. It hasn't be scored yet.
-        if (calculateUpperSectionScoreWithoutBonus() >= 63 &&
+        if (this.calculateUpperSectionScoreWithoutBonus() >= 63 &&
             this.scoreSheet.get(ScoreType.BONUS) == 0) {
             this.scoreSheet.put(ScoreType.BONUS, Globals.UPPER_SECTION_BONUS_SCORE);
         }
@@ -193,7 +193,7 @@ public class ScoreSheet {
         this.scoreSheet.put(ScoreType.CHANCE, value);
     }
 
-    private int calculateUpperSectionScoreWithoutBonus() {
+    public int calculateUpperSectionScoreWithoutBonus() {
         return this.scoreSheet.get(ScoreType.ONES) +
                this.scoreSheet.get(ScoreType.TWOS) +
                this.scoreSheet.get(ScoreType.THREES) +
