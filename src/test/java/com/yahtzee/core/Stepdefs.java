@@ -7,8 +7,11 @@ import static org.junit.Assert.*;
 import java.util.HashMap;
 
 public class Stepdefs implements En {
-    private Player player;
-    private HashMap<ScoreType, Integer> scoreSheet;
+    private final Player player;
+    private final HashMap<ScoreType, Integer> scoreSheet;
+
+    private Server server;
+    private Client client;
 
     private ScoreType createScoreTypeFromString(final String scoreType) {
         switch (scoreType) {
@@ -115,7 +118,6 @@ public class Stepdefs implements En {
             });
 
         // Rerolls.
-
         // Scoring With No Rerolls.
         When("I score in the fives section", () -> {
                 this.player.score(ScoreType.FIVES);
@@ -134,5 +136,43 @@ public class Stepdefs implements En {
 
         // Scoring After 2 Rerolls.
         // Necessary steps defined above.
+
+        // Launching the server and joining the game.
+        Given("the server is running on port {int}", (final Integer port) -> {
+                new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            server = new Server();
+                            server.start(port);
+                        }
+                    }).start();
+            });
+        When("I connect to the server on port {int}", (final Integer port) -> {
+                this.client = new Client();
+                this.client.start("localhost", port);
+            });
+        And("I enter {string} as my player name", (final String name) -> {
+                this.client.sendMessage(name);
+                Thread.sleep(10);
+            });
+        Then("the player count should be {int}", (final Integer playerCount) -> {
+                assertEquals(playerCount,
+                             Integer.valueOf(this.server.getPlayers().size()));
+            });
+        And("player 1 should have the name {string}", (final String name) -> {
+                assertEquals(name, this.server.getPlayers().get(0).getName());
+            });
+
+        // Launching the server, joining the game, and ending the game.
+        And("I enter {string} to {string} the game", (final String message,
+                                                      final String decision) -> {
+                this.client.sendMessage(decision.equals("begin") ? "y" : "q");
+                if (decision.equals("begin")) {
+                    Thread.sleep(50);
+                }
+            });
+        Then("the game should end", () -> {
+                assertEquals(false, this.server.isGameActive());
+            });
     }
 }
