@@ -99,7 +99,7 @@ public class ScoreSheet {
             occurences[d.getValue() - 1]++;
         }
 
-        if (!Arrays.stream(occurences).anyMatch(v -> v == countDesired)) {
+        if (!Arrays.stream(occurences).anyMatch(v -> v >= countDesired)) {
             return;
         }
 
