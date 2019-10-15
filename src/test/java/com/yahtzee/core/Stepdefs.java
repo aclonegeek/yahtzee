@@ -91,5 +91,27 @@ public class Stepdefs implements En {
                 assertEquals(score,
                              this.scoreSheet.get(ScoreType.BONUS));
             });
+
+        // Scoring Yahtzee bonus.
+        Given("I have already scored in the yahtzee section", () -> {
+                this.player.setDice("5 5 5 5 5");
+                this.player.score(ScoreType.YAHTZEE);
+                assertEquals(Integer.valueOf(50), this.scoreSheet.get(ScoreType.YAHTZEE));
+            });
+        When("I roll the dice {string}", (final String diceString) -> {
+                this.player.setDice(diceString);
+            });
+        And("score the dice in the yahtzee section", () -> {
+                this.player.score(ScoreType.YAHTZEE);
+            });
+        And("score the dice in the fives section", () -> {
+                this.player.score(ScoreType.FIVES);
+            });
+        Then("the yahtzee section should be {int}", (final Integer score) -> {
+                assertEquals(score, this.scoreSheet.get(ScoreType.YAHTZEE));
+            });
+        And("the fives section should be {int}", (final Integer score) -> {
+                assertEquals(score, this.scoreSheet.get(ScoreType.FIVES));
+            });
     }
 }
