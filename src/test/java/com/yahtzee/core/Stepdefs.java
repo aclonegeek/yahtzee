@@ -113,5 +113,26 @@ public class Stepdefs implements En {
         And("the fives section should be {int}", (final Integer score) -> {
                 assertEquals(score, this.scoreSheet.get(ScoreType.FIVES));
             });
+
+        // Rerolls.
+
+        // Scoring With No Rerolls.
+        When("I score in the fives section", () -> {
+                this.player.score(ScoreType.FIVES);
+            });
+
+        // Scoring With 1 Reroll of Less Than 5 Dice.
+        When("I keep the dice {string}", (final String diceString) -> {
+                this.player.reroll(diceString);
+            });
+        Then("the fives section should be greater than or equal to {int}", (final Integer score) -> {
+                assertTrue(this.scoreSheet.get(ScoreType.FIVES) >= score);
+            });
+
+        // Scoring With 1 Reroll of Exactly 5 Dice.
+        // Necessary steps defined above.
+
+        // Scoring After 2 Rerolls.
+        // Necessary steps defined above.
     }
 }
