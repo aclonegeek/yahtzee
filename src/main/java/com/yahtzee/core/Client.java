@@ -44,6 +44,15 @@ public class Client {
         }
     }
 
+    public void sendMessage(String message) {
+        try {
+            PrintWriter p = new PrintWriter(this.socket.getOutputStream(), true);
+            p.println(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public class ClientThread extends Thread {
         private final InputStream in;
         private final OutputStream out;
