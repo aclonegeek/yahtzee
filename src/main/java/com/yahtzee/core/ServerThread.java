@@ -107,6 +107,11 @@ public class ServerThread extends Thread {
     }
 
     private boolean processInput(BufferedReader in, String input) {
+        if (input.equals("q")) {
+            this.server.setGameActive(false);
+            return false;
+        }
+
         switch (this.gameState) {
         case WAITING_ON_ROLL:
             switch (input) {
@@ -175,26 +180,25 @@ public class ServerThread extends Thread {
         out.println();
 
         if (this.playerIndex == 0) {
-            out.println(players.get(1));
-            out.println();
+            if (players.size() > 1) {
+                out.println(players.get(1));
+                out.println();
+            }
 
             if (players.size() == Globals.MAX_PLAYERS) {
                 out.println(players.get(2));
             }
-        } else if (this.playerIndex == 1) {
+        } else if (players.size() > 1 && this.playerIndex == 1) {
             out.println(players.get(0));
             out.println();
 
             if (players.size() == Globals.MAX_PLAYERS) {
                 out.println(players.get(2));
             }
-        } else if (this.playerIndex == 2) {
+        } else if (players.size() > 2 && this.playerIndex == 2) {
             out.println(players.get(1));
             out.println();
-
-            if (players.size() == Globals.MAX_PLAYERS) {
-                out.println(players.get(0));
-            }
+            out.println(players.get(0));
         }
     }
 
