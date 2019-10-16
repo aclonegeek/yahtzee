@@ -27,18 +27,18 @@ Feature: Scoring Rerolls
     Then the fives section should be greater than or equal to 5
     And the number of rerolls is 2
 
-  Scenario Outline: 
+  Scenario Outline: Holding 0 to 4 Dice for Each of the 2 Rerolls
     When I keep the dice <diceToKeep1>
     And I keep the dice <diceToKeep2>
     And I score in the fives section
     Then the fives section should be greater than or equal to <score>
     And the number of rerolls is 2
+
+    Examples: 
       | diceToKeep1 | diceToKeep2 | score |
-      | "1"         | ""          |     5 |
-      | "1 2"       | ""          |    10 |
-      | "1 2 3"     | ""          |    15 |
-      | "1 2 3 4"   | ""          |    20 |
-      | "1 2 3 4 5" | ""          |    25 |
+      | ""          | ""          |     0 |
       | "1"         | "1"         |     5 |
-      | "1 5"       | "2 3"       |     0 |
+      | "1 2"       | "1 2"       |    10 |
+      | "1 2 3"     | "1 2 3"     |    15 |
+      | "1 2 3 4"   | "1 2 3 4"   |    20 |
       | "1 2 3 4 5" | "1 2 3 4 5" |    25 |
