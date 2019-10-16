@@ -4,6 +4,7 @@ import io.cucumber.java8.En;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Stepdefs implements En {
@@ -12,6 +13,8 @@ public class Stepdefs implements En {
 
     private Server server;
     private Client client;
+
+    private ArrayList<Client> clients;
 
     private ScoreType createScoreTypeFromString(final String scoreType) {
         switch (scoreType) {
@@ -178,6 +181,27 @@ public class Stepdefs implements En {
             });
         Then("the game should end", () -> {
                 assertEquals(false, this.server.isGameActive());
+            });
+
+        // Launching the server, 3 players joining the game and starting it, and switching from one player to the next one.
+        this.clients = new ArrayList<>();
+        And("player {int} connects to the server on port {int}", (final Integer player,
+                                                                  final Integer port) -> {
+                this.clients.add(new Client());
+                this.clients.get(player - 1).start("localhost", port);
+            });
+        And("player {int} enters {string} {string}", (final Integer player,
+                                                      final String message,
+                                                      final String action) -> {
+                this.clients.get(player - 1).sendMessage(message);
+            });
+        Then("the game is active", () -> {
+                assertEquals(true, this.server.isGameActive());
+            });
+        And("the current player should be player {int}", (final Integer player) -> {
+                Thread.sleep(100);
+                // 0-indexed, hence the + 1.
+                assertEquals(player, Integer.valueOf(this.server.getCurrentPlayer() + 1));
             });
     }
 }
