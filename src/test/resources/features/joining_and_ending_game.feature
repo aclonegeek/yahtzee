@@ -29,3 +29,4 @@ Feature: Joining and Ending a Game
     And player 1 enters "1" "to score in the Aces section"
     Then the game is active
     And the current player should be player 2
+    And the player count should be 3
