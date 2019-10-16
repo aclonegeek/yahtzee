@@ -122,6 +122,11 @@ public class Stepdefs implements En {
         When("I score in the fives section", () -> {
                 this.player.score(ScoreType.FIVES);
             });
+        And("the number of rerolls is {int}", (final Integer rerolls) -> {
+                // We call getNumberOfRolls, but it's really rerolls in this context
+                // because we never originally rolled (we set the dice manually).
+                assertEquals(rerolls, Integer.valueOf(this.player.getNumberOfRolls()));
+            });
 
         // Scoring With 1 Reroll of Less Than 5 Dice.
         When("I keep the dice {string}", (final String diceString) -> {
