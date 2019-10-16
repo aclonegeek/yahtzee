@@ -11,3 +11,9 @@
 java -cp yahtzee.jar com.yahtzee.core.Server 8002
 java -cp yahtzee.jar com.yahtzee.core.Client localhost 8002
 ```
+
+## Running Cucumber Tests
+Instructions assume use of Eclipse IDE.
+1. Right Click on RunCucumberTest.java
+2. Run As > JUnit Test
+3. Profit!
